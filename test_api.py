@@ -27,6 +27,7 @@ class ApiTests(unittest.TestCase):
     def get_query(self, path):
         if self.external_url != None:
             response = requests.get(self.external_url + path, timeout=10)
+            response.raise_for_status()
             return response.json()
         else:
             response = self.client.get(path)
@@ -35,6 +36,7 @@ class ApiTests(unittest.TestCase):
     def post_query(self, path, data):
         if self.external_url != None:
             response = requests.post(self.external_url + path, json=data, timeout=10)
+            response.raise_for_status()
             return response.json()
         else:
             response = self.client.post(path, json=data)
@@ -44,7 +46,7 @@ class ApiTests(unittest.TestCase):
         data = self.get_query('/spacy/v1/language_list')
         self.assertIn('en', data)
 
-    def test_tokenize_english(self):
+    def test_spacy_tokenize_english(self):
         text = "I was reading today's paper."
 
         data = self.post_query('/spacy/v1/tokenize', {'language': 'en', 'text': text})
@@ -89,7 +91,7 @@ class ApiTests(unittest.TestCase):
         
         self.assertEqual(data, expected_result)        
 
-    def test_tokenize_french(self):
+    def test_spacy_tokenize_french(self):
         text = "Le nouveau plan d’investissement du gouvernement."
 
         data = self.post_query('/spacy/v1/tokenize', data={'language': 'fr', 'text': text})
@@ -139,7 +141,7 @@ class ApiTests(unittest.TestCase):
         
         self.assertEqual(data, expected_result)                
 
-    def test_tokenize_chinese_chars(self):
+    def test_spacy_tokenize_chinese_chars(self):
         text = "送外卖的人"
 
         data = self.post_query('/spacy/v1/tokenize', data={'language': 'zh_char', 'text': text})
@@ -168,7 +170,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(data, expected_result_chars)                
 
 
-    def test_tokenize_chinese_words(self):
+    def test_spacy_tokenize_chinese_words(self):
         text = "送外卖的人"
 
         data = self.post_query('/spacy/v1/tokenize', data={'language': 'zh_jieba', 'text': text})
@@ -192,7 +194,7 @@ class ApiTests(unittest.TestCase):
 
         self.assertEqual(data, expected_result_words)
 
-    def test_tokenize_chinese_words_pkuseg(self):
+    def test_spacy_tokenize_chinese_words_pkuseg(self):
         text = "送外卖的人"
 
         data = self.post_query('/spacy/v1/tokenize', data={'language': 'zh_pkuseg', 'text': text})
@@ -216,7 +218,7 @@ class ApiTests(unittest.TestCase):
 
         self.assertEqual(data, expected_result_words)        
 
-    def test_more_languages(self):
+    def test_spacy_more_languages(self):
         input_sentences = [
             {
                 'sentence': 'There are many foreigners in China',
