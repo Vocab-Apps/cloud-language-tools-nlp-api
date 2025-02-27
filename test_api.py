@@ -41,13 +41,13 @@ class ApiTests(unittest.TestCase):
             return json.loads(response.data)
 
     def test_languages(self):
-        data = self.get_query('/v1/language_list')
+        data = self.get_query('/spacy/v1/language_list')
         self.assertIn('en', data)
 
     def test_tokenize_english(self):
         text = "I was reading today's paper."
 
-        data = self.post_query('/v1/tokenize', {'language': 'en', 'text': text})
+        data = self.post_query('/spacy/v1/tokenize', {'language': 'en', 'text': text})
 
         pprint.pprint(data)
         
@@ -92,7 +92,7 @@ class ApiTests(unittest.TestCase):
     def test_tokenize_french(self):
         text = "Le nouveau plan d’investissement du gouvernement."
 
-        data = self.post_query('/v1/tokenize', data={'language': 'fr', 'text': text})
+        data = self.post_query('/spacy/v1/tokenize', data={'language': 'fr', 'text': text})
 
         pprint.pprint(data)
         
@@ -142,7 +142,7 @@ class ApiTests(unittest.TestCase):
     def test_tokenize_chinese_chars(self):
         text = "送外卖的人"
 
-        data = self.post_query('/v1/tokenize', data={'language': 'zh_char', 'text': text})
+        data = self.post_query('/spacy/v1/tokenize', data={'language': 'zh_char', 'text': text})
 
         expected_result_chars = [{'can_translate': True,
             'can_transliterate': True,
@@ -171,7 +171,7 @@ class ApiTests(unittest.TestCase):
     def test_tokenize_chinese_words(self):
         text = "送外卖的人"
 
-        data = self.post_query('/v1/tokenize', data={'language': 'zh_jieba', 'text': text})
+        data = self.post_query('/spacy/v1/tokenize', data={'language': 'zh_jieba', 'text': text})
 
         expected_result_words = [{'can_translate': True,
             'can_transliterate': True,
@@ -195,7 +195,7 @@ class ApiTests(unittest.TestCase):
     def test_tokenize_chinese_words_pkuseg(self):
         text = "送外卖的人"
 
-        data = self.post_query('/v1/tokenize', data={'language': 'zh_pkuseg', 'text': text})
+        data = self.post_query('/spacy/v1/tokenize', data={'language': 'zh_pkuseg', 'text': text})
 
         expected_result_words = [{'can_translate': True,
             'can_transliterate': True,
@@ -256,5 +256,5 @@ class ApiTests(unittest.TestCase):
         for input_sentence in input_sentences:
             text = input_sentence['sentence']
             language = input_sentence['language_code']
-            data = self.post_query('/v1/tokenize', data={'language': language, 'text': text})
+            data = self.post_query('/spacy/v1/tokenize', data={'language': language, 'text': text})
             self.assertTrue(len(data) > 0)

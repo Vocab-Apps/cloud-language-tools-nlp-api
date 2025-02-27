@@ -83,24 +83,24 @@ class SpacyManager():
         return result        
 
 
-manager = SpacyManager()
+spacy_manager = SpacyManager()
 
-class Tokenize(flask_restful.Resource):
+class SpacyTokenize(flask_restful.Resource):
     def post(self):
         data = request.json
-        return manager.tokenize(data['language'], data['text'])
+        return spacy_manager.tokenize(data['language'], data['text'])
 
-class LanguageList(flask_restful.Resource):
+class SpacyLanguageList(flask_restful.Resource):
     def get(self):
-        return manager.language_list()
+        return spacy_manager.language_list()
 
 class Health(flask_restful.Resource):
     def get(self):
         return {'status': 'OK'}, 200
 
 
-api.add_resource(Tokenize, '/v1/tokenize')
-api.add_resource(LanguageList, '/v1/language_list')
+api.add_resource(SpacyTokenize, '/spacy/v1/tokenize')
+api.add_resource(SpacyLanguageList, '/spacy/v1/language_list')
 api.add_resource(Health, '/_health')
 
 if __name__ == '__main__':
