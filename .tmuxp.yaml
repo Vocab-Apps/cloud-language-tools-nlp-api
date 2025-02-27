@@ -1,0 +1,12 @@
+session_name: clt-nlp-api
+start_directory: ./ # load session relative to config location (project root).
+shell_command_before:
+  - cmd: source ${HOME}/python-env/cloud-language-tools-core/bin/activate
+    sleep_before: 1
+    sleep_after: 1
+  - cmd: source .bash_aliases
+windows:
+- window_name: clt-nlp
+  focus: true
+- window_name: aider
+- window_name: git
