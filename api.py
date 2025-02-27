@@ -4,6 +4,7 @@ from flask import Flask, request
 import flask_restful
 import logging
 import spacy
+import pythainlp
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -85,6 +86,9 @@ class SpacyManager():
 
 spacy_manager = SpacyManager()
 
+# spacy endpoints
+# ===============
+
 class SpacyTokenize(flask_restful.Resource):
     def post(self):
         data = request.json
@@ -94,13 +98,28 @@ class SpacyLanguageList(flask_restful.Resource):
     def get(self):
         return spacy_manager.language_list()
 
+# pythaiNLP endpoints
+# ===================
+
+class PythaiNLPTransliterate(flask_restful.Resource):
+    def post(self):
+        data = request.json
+        text = data['text']
+        return pythainlp.transliterate(text)
+
+# other endpoints
+# ===============
+
 class Health(flask_restful.Resource):
     def get(self):
         return {'status': 'OK'}, 200
 
 
+# spacy
 api.add_resource(SpacyTokenize, '/spacy/v1/tokenize')
 api.add_resource(SpacyLanguageList, '/spacy/v1/language_list')
+# pythainlp
+api.add_resource(PythaiNLPTransliterate, '/pythainlp/v1/transliterate')
 api.add_resource(Health, '/_health')
 
 if __name__ == '__main__':

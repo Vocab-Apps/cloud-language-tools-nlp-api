@@ -260,3 +260,7 @@ class ApiTests(unittest.TestCase):
             language = input_sentence['language_code']
             data = self.post_query('/spacy/v1/tokenize', data={'language': language, 'text': text})
             self.assertTrue(len(data) > 0)
+
+    def test_health(self):
+        data = self.get_query('/_health')
+        self.assertEqual(data, {'status': 'OK'})
