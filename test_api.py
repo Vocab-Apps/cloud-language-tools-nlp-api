@@ -6,14 +6,14 @@ import requests
 from api import app
 
 # testing an external URL:
-# SPACY_API_EXTERNAL_URL=http://localhost:8042 pytest test_api.py
+# CLT_NLP_API_EXTERNAL_URL=http://localhost:8042 pytest test_api.py
 
 class ApiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super(ApiTests, cls).setUpClass()
         
-        external_url = os.environ.get('SPACY_API_EXTERNAL_URL', None)
+        external_url = os.environ.get('CLT_NLP_API_EXTERNAL_URL', None)
         if external_url == None:
             cls.client = app.test_client()
             cls.external_url = None

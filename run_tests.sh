@@ -2,9 +2,9 @@
 set -e
 
 # Configuration
-IMAGE_NAME="lucwastiaux/spacy-api"
+IMAGE_NAME="vocabai/clt-nlp-api"
 TAG="test-$(date +%Y%m%d-%H%M%S)"
-CONTAINER_NAME="spacy_api_test"
+CONTAINER_NAME="clt_nlp_api_test"
 PORT="8042"
 
 echo "Building Docker image: $IMAGE_NAME:$TAG"
@@ -30,7 +30,7 @@ while ! curl -s "http://localhost:$PORT/_health" > /dev/null; do
 done
 
 echo "API is ready. Running tests..."
-SPACY_API_EXTERNAL_URL="http://localhost:$PORT" python -m pytest test_api.py -v
+CLT_NLP_API_EXTERNAL_URL="http://localhost:$PORT" python -m pytest test_api.py -v
 
 # Cleanup
 echo "Tests completed. Stopping and removing container..."
