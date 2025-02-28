@@ -9,6 +9,8 @@ import epitran as epitran_module
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
+CLT_NLP_API_VERSION='0.1.0'
+
 sentry_sdk.init(
     dsn="https://a12aca189f024156b8ff4ac1bb2b9e39@o968582.ingest.sentry.io/6758293",
     integrations=[
@@ -137,7 +139,8 @@ class EpitranTransliterate(flask_restful.Resource):
 
 class Health(flask_restful.Resource):
     def get(self):
-        return {'status': 'OK'}, 200
+        return {'status': 'OK',
+                'version': CLT_NLP_API_VERSION}, 200
 
 
 # spacy
