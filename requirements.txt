@@ -4,5 +4,6 @@ gunicorn
 spacy
 jieba
 pythainlp[thai2rom,ipa]
+epitran
 sentry-sdk[flask]
 psutil
