@@ -107,6 +107,19 @@ class PythaiNLPTransliterate(flask_restful.Resource):
         text = data['text']
         return pythainlp.transliterate(text)
 
+class PythaiNLPRomanize(flask_restful.Resource):
+    def post(self):
+        data = request.json
+        text = data['text']
+        return pythainlp.romanize(text, engine='thai2rom')
+
+class PythaiNLPWordTokenize(flask_restful.Resource):
+    def post(self):
+        data = request.json
+        text = data['text']
+        return pythainlp.word_tokenize(text)
+
+
 # other endpoints
 # ===============
 
@@ -120,6 +133,9 @@ api.add_resource(SpacyTokenize, '/spacy/v1/tokenize')
 api.add_resource(SpacyLanguageList, '/spacy/v1/language_list')
 # pythainlp
 api.add_resource(PythaiNLPTransliterate, '/pythainlp/v1/transliterate')
+api.add_resource(PythaiNLPRomanize, '/pythainlp/v1/romanize')
+api.add_resource(PythaiNLPWordTokenize, '/pythainlp/v1/word_tokenize')
+# health
 api.add_resource(Health, '/_health')
 
 if __name__ == '__main__':

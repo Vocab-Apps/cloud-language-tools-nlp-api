@@ -1,0 +1,1 @@
+alias test_api='pytest test_api.py'

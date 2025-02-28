@@ -264,3 +264,16 @@ class ApiTests(unittest.TestCase):
     def test_health(self):
         data = self.get_query('/_health')
         self.assertEqual(data, {'status': 'OK'})
+
+    # pythainlp
+    def test_pythainlp_transliterate(self):
+        data = self.post_query('/pythainlp/v1/transliterate', data={'text': 'สวัสดี'})
+        self.assertEqual(data, 's a ˧ . w a t̚ ˨˩ . d iː ˧')
+
+    def test_pythainlp_romanize(self):
+        data = self.post_query('/pythainlp/v1/romanize', data={'text': 'สวัสดี'})
+        self.assertEqual(data, 'sawatdi')
+
+    def test_pythainlp_tokenize(self):
+        data = self.post_query('/pythainlp/v1/word_tokenize', data={'text': 'ดิฉันอายุยี่สิบเจ็ดปีค่ะ'})
+        self.assertEqual(data, ['ดิฉัน', 'อายุ', 'ยี่สิบ', 'เจ็ด', 'ปี', 'ค่ะ'])
