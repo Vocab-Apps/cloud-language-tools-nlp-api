@@ -1,13 +1,28 @@
 #!/bin/sh
+set -eoux pipefail
 
-VERSION_NUMBER=$1 # for example 0.1
-GIT_TAG=v${VERSION_NUMBER}
+# exit if argument is not passed in
+if [ -z "$1" ]; then
+  echo "Please pass major, minor or patch"
+  exit 1
+fi
 
-git commit -a -m "upgraded version to ${VERSION_NUMBER}"
+BUMP_TYPE=$1 # major, minor or patch
+# check that the bump type is valid
+if [ "$BUMP_TYPE" != "major" ] && [ "$BUMP_TYPE" != "minor" ] && [ "$BUMP_TYPE" != "patch" ]; then
+  echo "Please pass major, minor or patch"
+  exit 1
+fi
+
+NEW_VERSION=`bump2version --list ${BUMP_TYPE} | grep new_version | sed -r s,"^.*=",,`
+# push to upstream
 git push
-git tag -a ${GIT_TAG} -m "version ${GIT_TAG}"
-git push origin ${GIT_TAG}
+git push --tags
+
+VERSION_NUMBER=$NEW_VERSION
 
 # docker build
-docker build -t lucwastiaux/spacy-api:${VERSION_NUMBER} -f Dockerfile .
-docker push lucwastiaux/spacy-api:${VERSION_NUMBER}
+export DOCKER_BUILDKIT=1
+DOCKER_IMAGE=vocabai/clt-nlp-api
+docker build -t ${DOCKER_IMAGE}:${VERSION_NUMBER} -f Dockerfile .
+docker push ${DOCKER_IMAGE}:${VERSION_NUMBER}
