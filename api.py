@@ -5,6 +5,7 @@ import flask_restful
 import logging
 import spacy
 import pythainlp
+import epitran as epitran_module
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -119,6 +120,17 @@ class PythaiNLPWordTokenize(flask_restful.Resource):
         text = data['text']
         return pythainlp.word_tokenize(text)
 
+# EpiTran endpoints
+# =================
+
+class EpitranTransliterate(flask_restful.Resource):
+    def post(self):
+        data = request.json
+        language_code = data['language_code']
+        text = data['text']
+        epi = epitran_module.Epitran(language_code)
+        return epi.transliterate(text)
+
 
 # other endpoints
 # ===============
@@ -135,6 +147,8 @@ api.add_resource(SpacyLanguageList, '/spacy/v1/language_list')
 api.add_resource(PythaiNLPTransliterate, '/pythainlp/v1/transliterate')
 api.add_resource(PythaiNLPRomanize, '/pythainlp/v1/romanize')
 api.add_resource(PythaiNLPWordTokenize, '/pythainlp/v1/word_tokenize')
+# epitran
+api.add_resource(EpitranTransliterate, '/epitran/v1/transliterate')
 # health
 api.add_resource(Health, '/_health')
 

@@ -277,3 +277,10 @@ class ApiTests(unittest.TestCase):
     def test_pythainlp_tokenize(self):
         data = self.post_query('/pythainlp/v1/word_tokenize', data={'text': 'ดิฉันอายุยี่สิบเจ็ดปีค่ะ'})
         self.assertEqual(data, ['ดิฉัน', 'อายุ', 'ยี่สิบ', 'เจ็ด', 'ปี', 'ค่ะ'])
+
+    # epitran
+    def test_epitran_transliterate(self):
+        data = self.post_query('/epitran/v1/transliterate', 
+            data={'text': 'l’herbe est plus verte ailleurs',
+                  'language_code': 'fra-Latn'})
+        self.assertEqual(data, 'l’ɛʀbə ɛst plys vɛʀtə elœʀ')
