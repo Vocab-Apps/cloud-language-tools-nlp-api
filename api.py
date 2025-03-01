@@ -7,6 +7,7 @@ import spacy
 import pythainlp
 import epitran as epitran_module
 import sentry_sdk
+import psutil
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 CLT_NLP_API_VERSION='0.2.2'
@@ -139,6 +140,13 @@ class EpitranTransliterate(flask_restful.Resource):
 
 class Health(flask_restful.Resource):
     def get(self):
+        # Check for at least 1GB of free RAM
+        free_ram_gb = psutil.virtual_memory().available / (1024 * 1024 * 1024)
+        if free_ram_gb < 1:
+            return {'status': 'ERROR',
+                    'message': f'Low memory: {free_ram_gb:.2f}GB available, need at least 1GB',
+                    'version': CLT_NLP_API_VERSION}, 503
+        
         return {'status': 'OK',
                 'version': CLT_NLP_API_VERSION}, 200
 
