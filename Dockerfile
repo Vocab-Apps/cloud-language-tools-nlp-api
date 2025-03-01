@@ -19,6 +19,10 @@ RUN pip3 install --no-cache-dir spacy-pkuseg && pip3 cache purge
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt && pip3 cache purge
 
+# post install step (force download of some data files)
+COPY post_install.py ./
+RUN python3 post_install.py
+
 # copy app files
 COPY api.py start.sh ./
 
