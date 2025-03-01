@@ -15,6 +15,10 @@ COPY install_spacy_modules.sh ./
 RUN ./install_spacy_modules.sh
 RUN pip3 install --no-cache-dir spacy-pkuseg && pip3 cache purge
 
+# install flite / lex_lookup (required by epitran)
+RUN apt-get update -y && apt-get install -y libasound2 python3-pip git gnupg build-essential wget
+RUN wget https://github.com/festvox/flite/archive/refs/tags/v2.2.tar.gz && tar xvzf v2.2.tar.gz && cd flite-2.2 && ./configure && make && make install && cd testsuite && make lex_lookup && cp lex_lookup /usr/local/bin
+
 # install requirements
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt && pip3 cache purge
