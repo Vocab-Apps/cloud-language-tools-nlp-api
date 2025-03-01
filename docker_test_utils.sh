@@ -30,7 +30,10 @@ test_docker_container() {
     # Check API version if expected version is provided
     if [ -n "${4:-}" ]; then
         echo "Verifying API version matches $4..."
-        API_VERSION=$(curl -s "http://localhost:$PORT/_health" | grep -o '"version":"[^"]*"' | cut -d'"' -f4)
+        HEALTH_OUTPUT_JSON=$(curl -s "http://localhost:$PORT/_health")
+        echo "Health output: $HEALTH_OUTPUT_JSON"
+        # use jq to extract version from JSON output
+        API_VERSION=$(echo "$HEALTH_OUTPUT_JSON" | jq -r '.version')
         if [ "$API_VERSION" != "$4" ]; then
             echo "ERROR: API version mismatch. Expected: $4, Got: $API_VERSION"
             docker container stop "$CONTAINER_NAME"
