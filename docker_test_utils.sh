@@ -15,7 +15,7 @@ test_docker_container() {
     echo "Waiting for API to be ready..."
     MAX_RETRIES=30
     RETRY_COUNT=0
-    while ! curl -s "http://localhost:$PORT/_health" > /dev/null; do
+    while ! curl -s --max-time 2 "http://localhost:$PORT/_health" > /dev/null; do
         RETRY_COUNT=$((RETRY_COUNT+1))
         if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
             echo "API failed to start after $MAX_RETRIES attempts"
@@ -30,7 +30,7 @@ test_docker_container() {
     # Check API version if expected version is provided
     if [ -n "${4:-}" ]; then
         echo "Verifying API version matches $4..."
-        HEALTH_OUTPUT_JSON=$(curl -s "http://localhost:$PORT/_health")
+        HEALTH_OUTPUT_JSON=$(curl -s --max-time 2 "http://localhost:$PORT/_health")
         echo "Health output: $HEALTH_OUTPUT_JSON"
         # use jq to extract version from JSON output
         API_VERSION=$(echo "$HEALTH_OUTPUT_JSON" | jq -r '.version')
