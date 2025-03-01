@@ -144,10 +144,12 @@ class Health(flask_restful.Resource):
         free_ram_gb = psutil.virtual_memory().available / (1024 * 1024 * 1024)
         if free_ram_gb < 1:
             return {'status': 'ERROR',
+                    'free_ram_gb': free_ram_gb,
                     'message': f'Low memory: {free_ram_gb:.2f}GB available, need at least 1GB',
                     'version': CLT_NLP_API_VERSION}, 503
         
         return {'status': 'OK',
+                'free_ram_gb': free_ram_gb,
                 'version': CLT_NLP_API_VERSION}, 200
 
 
