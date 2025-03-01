@@ -10,7 +10,7 @@ import sentry_sdk
 import psutil
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-CLT_NLP_API_VERSION='0.3.2'
+CLT_NLP_API_VERSION='0.4.0'
 
 sentry_sdk.init(
     dsn="https://a12aca189f024156b8ff4ac1bb2b9e39@o968582.ingest.sentry.io/6758293",
