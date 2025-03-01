@@ -264,6 +264,7 @@ class ApiTests(unittest.TestCase):
     def test_health(self):
         data = self.get_query('/_health')
         self.assertEqual(data['status'], 'OK')
+        self.assertIn('version', data)
 
     # pythainlp
     def test_pythainlp_transliterate(self):

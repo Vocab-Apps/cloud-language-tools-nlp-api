@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -eoux pipefail
 
 # exit if argument is not passed in
@@ -25,4 +25,17 @@ VERSION_NUMBER=$NEW_VERSION
 export DOCKER_BUILDKIT=1
 DOCKER_IMAGE=vocabai/clt-nlp-api
 docker build -t ${DOCKER_IMAGE}:${VERSION_NUMBER} -f Dockerfile .
-docker push ${DOCKER_IMAGE}:${VERSION_NUMBER}
+
+# Source the utility functions
+source ./docker_test_utils.sh
+
+# Test the container before pushing
+echo "Testing container before pushing..."
+PORT="8042"
+if test_docker_container "$DOCKER_IMAGE" "$VERSION_NUMBER" "$PORT" "$VERSION_NUMBER"; then
+  echo "Container tests passed. Pushing to registry..."
+  docker push ${DOCKER_IMAGE}:${VERSION_NUMBER}
+else
+  echo "Container tests failed! Not pushing to registry."
+  exit 1
+fi
