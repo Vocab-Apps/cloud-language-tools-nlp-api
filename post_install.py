@@ -9,9 +9,17 @@ import spacy.lang.zh
 
 # the following will force a download of some datasets
 
-spacy_engines = {}
+# spacy / jieba
 
+spacy_engines = {}
 spacy_engines['zh_char'] = spacy.lang.zh.Chinese()
 spacy_engines['zh_jieba'] = spacy.lang.zh.Chinese.from_config({"nlp": {"tokenizer": {"segmenter": "jieba"}}})
 nlp = spacy.lang.zh.Chinese.from_config({"nlp": {"tokenizer": {"segmenter": "pkuseg"}}})
 nlp.tokenizer.initialize(pkuseg_model="mixed")
+
+
+# pythainlp
+text = 'ดิฉันอายุยี่สิบเจ็ดปีค่ะ'
+pythainlp.transliterate(text)
+pythainlp.romanize(text, engine='thai2rom')
+pythainlp.word_tokenize(text)
