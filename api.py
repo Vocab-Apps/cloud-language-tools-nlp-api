@@ -11,7 +11,7 @@ import sentry_sdk
 import psutil
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-CLT_NLP_API_VERSION='0.4.0'
+CLT_NLP_API_VERSION='0.4.1'
 FREE_MEMORY_THRESHOLD = float(os.environ.get('FREE_MEMORY_THRESHOLD_GB', '0.5'))
 
 sentry_sdk.init(
