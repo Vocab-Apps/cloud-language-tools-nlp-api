@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 from flask import Flask, request
 import flask_restful
 import logging
@@ -11,6 +12,7 @@ import psutil
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 CLT_NLP_API_VERSION='0.4.0'
+FREE_MEMORY_THRESHOLD = float(os.environ.get('FREE_MEMORY_THRESHOLD_GB', '0.5'))
 
 sentry_sdk.init(
     dsn="https://a12aca189f024156b8ff4ac1bb2b9e39@o968582.ingest.sentry.io/6758293",
@@ -142,10 +144,11 @@ class Health(flask_restful.Resource):
     def get(self):
         # Check for at least 1GB of free RAM
         free_ram_gb = psutil.virtual_memory().available / (1024 * 1024 * 1024)
-        if free_ram_gb < 1:
+        FREE_MEMORY_THRESHOLD
+        if free_ram_gb < FREE_MEMORY_THRESHOLD:
             return {'status': 'ERROR',
                     'free_ram_gb': free_ram_gb,
-                    'message': f'Low memory: {free_ram_gb:.2f}GB available, need at least 1GB',
+                    'message': f'Low memory: {free_ram_gb:.2f}GB available, need at least {FREE_MEMORY_THRESHOLD:.2f}GB',
                     'version': CLT_NLP_API_VERSION}, 503
         
         return {'status': 'OK',
